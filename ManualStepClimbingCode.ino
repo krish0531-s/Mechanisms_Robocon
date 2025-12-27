@@ -1,4 +1,21 @@
-// Example: "L 30", "X -40", "Y 0"
+// Example: "FL 30", "BL -40", "FW 0", "BW 20"
+//FL, BL , FW, BW are motor ID's
+//FL: front lifting rack; BL: back lifting rack; FW: front wheel; BW: back Wheel
+//To stop enter Motor ID 0 in serial monitor. Example- FL 0
+//Run any motor individually. To run multiple motors send each command in seperate line
+//Edit the pinouts for each motor given below ⬇
+
+int fl_lpwm = 4; //Front lift pinouts
+int fl_rpwm = 5;
+
+int bl_lpwm = 6; //Back lift pinouts
+int bl_rpwm = 7;
+
+int fw_lpwm = 8; //Front wheel pinouts
+int fw_rpwm = 9;
+
+int bw_lpwm = 10; //Back wheel pinouts
+int bw_rpwm = 11;
 
 struct Motor {
   int LPWM;
@@ -10,13 +27,13 @@ struct Motor {
 const int MAX_RPM = 50; // rated speed
 
 // --- Define each actuator’s pins ---
-Motor frontLift  = {4, 5, 0, 0};   // Front lifting rack
-Motor backLift = {6, 7, 0, 0};   // Back Lifiting rack
-Motor frontWheel = {8, 9, 0, 0};   // Front wheel
-Motor backWheel = {10,11, 0, 0};  //Back wheel
+Motor frontLift  = {fl_lpwm, fl_rpwm, 0, 0};   // Front lifting rack
+Motor backLift = {bl_lpwm, bl_rpwm, 0, 0};   // Back Lifiting rack
+Motor frontWheel = {fw_lpwm, fw_rpwm, 0, 0};   // Front wheel
+Motor backWheel = {bw_lpwm, bw_rpwm, 0, 0};  //Back wheel
 void setup() {
   Serial.begin(9600);
-  pinMode(13, OUTPUT);
+  pinMode(13, OUTPUT); //Lightup internal led
   digitalWrite(13, HIGH);
 
   setupMotor(frontLift);
@@ -46,7 +63,7 @@ void loop() {
     if (spaceIndex > 0) {
       rpm = input.substring(spaceIndex + 1).toInt();
     } else {
-      Serial.println(" Invalid input! Use format: L 30");
+      Serial.println(" Invalid input! Use format: FL 30");
       return;
     }
 
